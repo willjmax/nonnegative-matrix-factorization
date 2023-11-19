@@ -1,0 +1,86 @@
+\documentclass[12pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage{algorithmicx}
+\usepackage{algpseudocode}
+\usepackage{mathtools}
+\usepackage{float}
+\usepackage{etoolbox}\AtBeginEnvironment{algorithmic}{\small}
+
+%\setlength{\parindent}{4em}
+
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Tr}{\mathrm{Tr}}
+\newcommand{\one}{\mathbf{1}}
+\DeclareMathOperator*{\argmax}{arg\,max} 
+\DeclareMathOperator*{\argmin}{arg\,min}
+
+\newenvironment{theorem}[2][Theorem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{lemma}[2][Lemma]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{problem}[2][Problem]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{reflection}[2][Reflection]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{proposition}[2][Proposition]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+\newenvironment{corollary}[2][Corollary]{\begin{trivlist}
+\item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
+
+\algnewcommand{\IfThenElse}[3]{\State \algorithmicif\ #1\ \algorithmicthen\ #2\ \algorithmicelse\ #3}
+
+\begin{document}
+
+
+\title{Pre-interview Task}
+\author{William Maxwell} 
+\maketitle
+\paragraph{Problem 1a.}
+The $k$-means objective function on $n$ $d$-dimensional data points $x_1,\dots,x_n$ is given by \[J_{K\text{-means}} \coloneqq \sum_{i=1}^K \sum_{x_j \in C_i} \|x_j - c_i\|^2 \] where $c_i$ is the average over the points in the cluster $C_i$. Note that the $j$th component of $c_i$ is given by $c_i(j) = \frac{1}{|C_i|}\sum_{x \in C_i} x(j)$.
+Now, consider the intra-cluster kernel similarity given by $\Tr(HAH^T)$ where $A = X^TX$ and $H$ is a $k \times n$ matrix whose rows are normalized indicator vectors. Our goal is to show that $\mathrm{argmin} \, J_{k\text{-means}} = \mathrm{argmax} \, \Tr(HAH^T)$ where we are maximizing over all possible $H$'s.
+
+Given a feasible $H$ let $C_1,\dots,C_k$ be the partition given by its rows. This partition will correspond to the clusters in $k$-means. The cluster $C_i$ will be represented by the normalized indicator vector $\one_{C_i} / \sqrt{|C_i|}$.
+Define the vector $y_i = [x_1(i),\dots,x_n(i)]^T$, that is the $j$th component of $y_i$ is the $i$th component of the $j$th vector in our data set, $y_i(j) = x_j(i)$. Now, we compute the entries of $XH^T$.
+\begin{align*}
+(XH^T)_{ij} &= \sum_{k=1}^n y_i(k) \one_{C_j}(k)\\
+&= \sum_{x \in C_j} \frac{x(i)}{\sqrt{|C_j|}} \\
+&= \sqrt{|C_j|} c_j(i)
+\end{align*}
+Hence, $(XH^T)_{ij}^2 = |C_j|c_j^2(i)$. Next, we compute the trace.
+\begin{align*}
+\Tr(HX^TXH^T) &= \|XH^T\|^2_F \\
+&= \sum_{i=1}^d \sum_{j=1}^K \left( X H^T \right)^2_{ij} \\
+&= \sum_{i=1}^d \sum_{j=1}^K |C_j| c_j^2(i) \\
+&= \sum_{j=1}^K |C_j| \|c_j\|^2
+\end{align*}
+
+Returning to the $K$-means objective, we have
+\begin{align*}
+\sum_{k=1}^K \sum_{x \in C_k} \|x - c_k\|^2 &= \sum_{i=k}^K \sum_{x \in C_k} \|x\|^2 + \|c_k\|^2 - 2x^Tc_k \\
+&= \sum_{k=1}^K |C_k|\|c_k\|^2 + \sum_{k=1}^K \sum_{x \in C_k} \|x\|^2 - 2x^T c_k
+\end{align*}
+
+Stuff from paper:
+\begin{align*}
+\sum_{k=1}^K \sum_{i \in C_k} \|x_i - c_k\|^2 &= \sum_{k=1}^K \sum_{i \in C_k} \|x_i\|^2 + \|c_k\|^2 - 2x_i^T c_k \\
+&= \sum_{i=1}^n \|x_i\|^2 + \sum_{k=1}^K \sum_{i \in C_k} \|c_k\|^2 - 2 \sum_{k=1}^K \sum_{i \in C_k} x_i^T c_k \\
+&= \sum_{i=1}^n \|x_i\|^2 + \sum_{k=1}^K |C_k| \|c_k\|^2 - 2 \sum_{k=1}^K |C_k| \|c_k\|^2 \\
+&= \sum_{i=1}^n \|x_i\|^2 - \sum_{k=1}^K |C_k|\|c_k\|^2\\
+&= \sum_{i=1}^n \|x_i\|^2 - \sum_{k=1}^K \frac{1}{|C_k|} \sum_{i, j \in C_k} x_i^T x_j
+\end{align*}
+
+NOTE: \[(HAH^T)_{ij} =  \frac{1}{\sqrt{n_i n_j}} \sum_{x \in C_i}\sum_{y \in C_j} x^T y \]
+
+\paragraph{Problem 1b.}
+\begin{align*}
+\argmin_{H} J_{k\text{-means}} &= \argmax_H \Tr(HAH^T) \\
+&= \argmin_H -2\Tr(HAH^T) \\
+&= \argmin_H \|A\|^2 -2 \Tr(HAH^T) + \|H^TH\|^2 \\
+&= \argmin_H \|A - HH^T\|^2
+\end{align*}
+
+\end{document}
+
