@@ -28,3 +28,4 @@ jobs:
 
       - name: Run flake8
         run: flake8
+        working-directory: code
