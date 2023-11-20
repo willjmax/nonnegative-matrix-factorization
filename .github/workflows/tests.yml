@@ -22,4 +22,4 @@ jobs:
           python-version: 3.8
 
       - name: Run unit tests
-        run: python -u -m unittest code/tests.py
+        run: python -u -m unittest discovery -v
