@@ -17,6 +17,7 @@
 \DeclareMathOperator*{\argmax}{arg\,max} 
 \DeclareMathOperator*{\argmin}{arg\,min}
 
+
 \newenvironment{theorem}[2][Theorem]{\begin{trivlist}
 \item[\hskip \labelsep {\bfseries #1}\hskip \labelsep {\bfseries #2.}]}{\end{trivlist}}
 \newenvironment{lemma}[2][Lemma]{\begin{trivlist}
@@ -38,6 +39,7 @@
 \title{Pre-interview Task}
 \author{William Maxwell} 
 \maketitle
+Use citations \cite{Ding2005,Ding2008}
 \paragraph{Problem 1a.}
 The $k$-means objective function on $n$ $d$-dimensional data points $x_1,\dots,x_n$ is given by \[J_{K\text{-means}} \coloneqq \sum_{i=1}^K \sum_{x_j \in C_i} \|x_j - c_i\|^2 \] where $c_i$ is the average over the points in the cluster $C_i$. Note that the $j$th component of $c_i$ is given by $c_i(j) = \frac{1}{|C_i|}\sum_{x \in C_i} x(j)$.
 Now, consider the intra-cluster kernel similarity given by $\Tr(HAH^T)$ where $A = X^TX$ and $H$ is a $k \times n$ matrix whose rows are normalized indicator vectors. Our goal is to show that $\mathrm{argmin} \, J_{k\text{-means}} = \mathrm{argmax} \, \Tr(HAH^T)$ where we are maximizing over all possible $H$'s.
@@ -81,6 +83,9 @@ NOTE: \[(HAH^T)_{ij} =  \frac{1}{\sqrt{n_i n_j}} \sum_{x \in C_i}\sum_{y \in C_j
 &= \argmin_H \|A\|^2 -2 \Tr(HAH^T) + \|H^TH\|^2 \\
 &= \argmin_H \|A - HH^T\|^2
 \end{align*}
+
+\bibliographystyle{plain}
+\bibliography{questions}
 
 \end{document}
 
