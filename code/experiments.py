@@ -17,22 +17,21 @@ def sklearn_nmf(A: np.ndarray, W: np.ndarray, H: np.ndarray, k: int) -> float:
 
 def test_random(rows: int, cols: int, k: int,
                 it: Optional[int] = 1000) -> Tuple[float, float, float]:
-    '''Performs NMF on a rectangular matrix using our implementation and
-       sklearn's implementation
-       Returns a triple containing the error immediately after initialization
-       in the first component, the error of our implementation in the second
-       component, and the error of sklearn's implementation in the third
-       component'''
+    '''Performs NMF on using our implementation and sklearn's
+       implementation. Returns a triple containing the error
+       immediately after initialization in the first component,
+       the error of our implementation in the second component, and
+       the error of sklearn's implementation in the third component'''
 
     A = np.random.rand(rows, cols)
-    W, H = initialize(A, k)
+    H, W = initialize(A, k)
 
-    error_0 = loss(A, W, H)
-    error_sk = sklearn_nmf(A, W, H, k)
+    error_0 = loss(A, H, W)
+    error_sk = sklearn_nmf(A, H, W, k)
 
     for x in range(it):
-        update(A, W, H)
+        update(A, H, W)
 
-    error = loss(A, W, H)
+    error = loss(A, H, W)
 
     return error_0, error, error_sk
