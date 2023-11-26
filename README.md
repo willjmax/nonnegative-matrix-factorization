@@ -1,6 +1,12 @@
 # Research Software Engineer Pre-Interview Task
+This repo contains all of the materials for the pre-interview task.
 
-This repo contains the Non-negative Matrix Factorization (NNMF) library and the Latex files for the pre-interview task.
+1. The NNMF library is found in ```code/nnmf.py```
+2. A Jupyter notebook containing a comparison of the NNMF implementation to ```sklearn.decomposition.NMF``` is found in ```code/experiment.ipynb```
+3. Unit tests are contained in ```code/tests.py```
+4. The TeX files for the math questions are in the ```math/``` folder
+5. Continuous integration is in ```.github/workflows/```. On each push and pull request we perform linting with ```flake8``` and run the unit tests in ```code/tests.py```.
+
 
 ## The NNMF library
 Let $A$ be a nonnegative $m \times n$ matrix where the $n$ column vectors are viewed at data points with $m$ features.
@@ -18,7 +24,7 @@ matrix consists of $m$ data points with $n$ features. This is the transpose of t
 As a result, our implementation formulates the problem as $A^T \approx H^T W^T$.
 
 ### Documentation
-The library is contained in ```code/nnmf.py``` and consists of the four functions defined here.
+The library is contained in ```code/nnmf.py``` and consists of the five functions defined here.
 | Function   | Input                                                                                                                                               | Output                                        | Description                                                                                                                            |
 |------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|-----------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------|
 | initialize | <code>A: numpy.ndarray</code><br><br> <code>k: int</code>                                                                                               | <code>(numpy.ndarray, numpy.ndarray)</code>   | Returns the initial factorization.                                                                                                     |
