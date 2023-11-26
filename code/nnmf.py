@@ -7,14 +7,42 @@ from typing import Optional, Tuple
 
 
 def fnorm(m: np.ndarray) -> float:
-    '''Returns the Frobenious norm of a matrix'''
+    '''
+    Returns the Frobenious norm of a matrix
+
+    Parameters
+    ----------
+    m : ndarray of shape (rows, cols)
+
+    Returns
+    -------
+    float
+        The Frobenious norm of m
+    '''
 
     return math.sqrt(np.square(m).sum())
 
 
 def initialize(A: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray]:
-    '''Performs k-means clustering and returns both the
-       indicator matrix and the centroid matrix'''
+    '''
+    Performs k-means clustering and returns both the
+    indicator matrix and the centroid matrix
+
+    Parameters
+    ----------
+    A : ndarray of shape (rows, cols)
+
+    k : int
+        The number of clusters for k-means
+
+    Returns
+    -------
+    H : ndarray of shape (rows, k)
+        The matrix of coefficients returned by k-means
+
+    W : ndarray of shape (k, cols)
+        The matrix of centroids returned by k-means
+    '''
 
     # The matrix A is defined in the task to be an mxn matrix where m
     # is the number of features and n is the number of samples.
@@ -37,7 +65,25 @@ def initialize(A: np.ndarray, k: int) -> Tuple[np.ndarray, np.ndarray]:
 def update(A: np.ndarray,
            H: np.ndarray,
            W: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
-    '''Performs one step of the NMF alternating update rule'''
+    '''
+    Performs one step of the NNMF alternating update rule
+
+    Parameters
+    ----------
+    A : ndarray of shape (rows, cols)
+
+    H : ndarray of shape (rows, k)
+
+    W : ndarray of shape (k, cols)
+
+    Returns
+    -------
+    H : ndarray of shape (rows, k)
+        The updated matrix
+
+    W : ndarray of shape (k, cols)
+        The updated matrix
+    '''
 
     # fix W
     for row in range(A.shape[0]):
@@ -51,7 +97,22 @@ def update(A: np.ndarray,
 
 
 def loss(A: np.ndarray, H: np.ndarray, W: np.ndarray) -> float:
-    '''Returns the Frobenius norm of A - WH'''
+    '''
+    Returns the Frobenius norm of (A - HW)
+
+    Parameters
+    ----------
+    A : ndarray of shape (rows, cols)
+
+    H : ndarray of shape (rows, k)
+
+    W : ndarray of shape (k, cols)
+
+    Returns
+    -------
+    float
+        The Frobenious norm of (A - HW)
+    '''
 
     HW = H@W
     return fnorm(A - HW)
@@ -61,14 +122,40 @@ def nnmf(A: np.ndarray,
          k: int,
          max_iter: Optional[int] = 1000,
          tol: Optional[float] = 0.001) -> Tuple[np.ndarray, np.ndarray]:
-    '''Perform the nnmf algorithm'''
+    '''
+    Perform the nnmf algorithm
+
+    Parameters
+    ----------
+    A : ndarray of shape (rows, cols)
+        The non-negative matrix to factorize
+
+    k : int
+        The number of clusters for k-means
+
+    max_iter : int, default=1000
+        The maximum number of iterations of the update rule
+
+    tol : float, default=0.001
+        The tolerance threshhold. After an update, if the Frobenious
+        norm of (A-HW) decreases by a value less than the threshhold
+        stop iterating and return.
+
+    Returns
+    -------
+    H : ndarray of shape (rows, k)
+        The matrix of coefficients in the factorization A=HW
+
+    W : ndarray of shape (k, cols)
+        The matrix of centroids in the factorization A=HW
+    '''
 
     H, W = initialize(A, k)
     for x in range(0, max_iter):
         if x % 10 == 0:
-            error_0 = loss(A, W, H)
-            update(A, W, H)
-            error_1 = loss(A, W, H)
+            error_0 = loss(A, H, W)
+            update(A, H, W)
+            error_1 = loss(A, H, W)
             if abs(error_0 - error_1) < tol:
                 return H, W
         else:
