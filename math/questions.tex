@@ -68,10 +68,18 @@ A PLSA task asks to perform the following joint probability factorization \[p(w_
 First, note the following \[ \sum_{i=1}^m p(w_i|k) = 1, \quad  \sum_{j=1}^n p(d_j|k) = 1, \quad \sum_{k=1}^K p(k) = 1.\]
 Let $A=WH$ be some non-negative factorization and define the diagonal matrices $Y_{kk} = \sum_{i=1}^m W_{ik}$, $Z_{kk} = \sum_{j=1}^n H_{kj}$.
 It follows that $\tilde{W} = WY^{-1}$ is normalized such that each column has $\ell_1$-norm 1, and $\tilde{H} = Z^{-1}H$ is normalized such that each row has $\ell_1$-norm 1. Moreover, we have $A = WH = \tilde{W} Y Z \tilde{H}$.
-We have the equalities \[\sum_{i=1}^m \tilde{W}_{ik} = 1, \quad \sum_{j=1}^n \tilde{H}_{kj} = 1,\] hence we can interpret $\tilde{W}_{ij} = p(w_i|k)$ and $\tilde{H}_{ij} = p(d_j|k)$.
+We have the equalities \[\sum_{i=1}^m \tilde{W}_{ik} = 1, \quad \sum_{j=1}^n \tilde{H}_{kj} = 1,\] hence we can interpret $\tilde{W}_{ik} = p(w_i|k)$ and $\tilde{H}_{kj} = p(d_j|k)$.
 Moreover, we have \[1 = \sum_{i=1}^m \sum_{j=1}^n p(w_i, d_j) = \sum_{i=1}^m \sum_{j=1}^n A_{ij} = \sum_{i=1}^m \sum_{j=1}^n \sum_{k=1}^K \tilde{W}_{ik} \left( YZ \right)_{kk} \tilde{H}_{kj} = \sum_{k=1}^K \left(Y Z \right)_{kk}\] so we can interpret $(YZ)_{kk} = p(k)$.
-Thus, the non-negative matrix factorization $A = \tilde{W} ZY \tilde{H}$ induces the PLSA factorization \[p(w_i, d_j) = A_{ij} = \sum_{k=1}^K \tilde{W}_{ik} \left(YZ \right)_{kk} \tilde{H}_{kj} = p(w_i|k)p(d_j|k)p(k). \]
+Thus, the non-negative matrix factorization $A = \tilde{W} ZY \tilde{H}$ induces the PLSA factorization \[p(w_i, d_j) = A_{ij} = \sum_{k=1}^K \tilde{W}_{ik} \left(YZ \right)_{kk} \tilde{H}_{kj} = \sum_{k=1}^K p(w_i|k)p(d_j|k)p(k). \]
+
 \paragraph{Problem 2b.}
+Consider an $m \times n$ matrix $A$ with $A_{ij} = p(w_i, d_j)$. Performing $K$-means on $A$ yields an $m \times K$ matrix of centroids $W$, and a $K \times n$ indicator matrix $H$.
+Viewing $A \approx WH = \tilde{W}YZ\tilde{H}$ as an approximate non-negative matrix factorization, we interpret the PLSA joint probability factorization. By $c_k$ we denote the centroid of the $k$th cluster, and $c_k(i)$ the $i$th feature of the centroid. We have,
+\[p(w_i | k) \approx \tilde{W}_{ik} = \frac{c_k(i)}{\sum_{j=1}^m c_k(j)}.  \]
+In other words, $p(w_i | k)$ is the normalized weight of the $i$th feature in the $k$th centroid.
+We also have, \[ p(d_j | k) \approx \tilde{H}_{kj} = \begin{cases} \frac{1}{|C_k|} & x_j \in C_k \\ 0 & \text{otherwise} \end{cases}\] which can be interpreted as the probability of sampling the $j$th vector conditioned on the $k$th cluster.
+Finally, we have \[p(k) \approx (ZY)_{kk} = \|c_k\|_1 |C_k| = \sum_{i=1}^m \sum_{x_j \in C_k} p(w_i, d_j)\] which is the probability that the event which occurs is in the form $p(w_i, d_j)$ where $x_j$ is in the $k$th cluster.
+
 \paragraph{Problem 2c.}
 
 \bibliographystyle{plain}
