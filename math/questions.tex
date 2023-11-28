@@ -63,7 +63,14 @@ Now, we can show that $K$-means can be formulated as an NNMF problem under the c
 \end{align*}
 
 \paragraph{Problem 2a.}
-Use citation \cite{Ding2008}
+NNMF was shown to take the form of a PLSA problem by Ding, Li, and Peng~\cite{Ding2008}. We follow their approach.
+A PLSA task asks to perform the following joint probability factorization \[p(w_i, d_j) \approx \sum_{k=1}^K p(w_i | k) p(d_j | k) p(k) \] given $p(w_i, d_j)$ and $K$. Consider the matrix $A_{ij} = p(w_i, d_j)$ we will show that factorizing $A \approx WH$ can be viewed as a PSLA task.
+First, note the following \[ \sum_{i=1}^m p(w_i|k) = 1, \quad  \sum_{j=1}^n p(d_j|k) = 1, \quad \sum_{k=1}^K p(k) = 1.\]
+Let $A=WH$ be some non-negative factorization and define the diagonal matrices $Y_{kk} = \sum_{i=1}^m W_{ik}$, $Z_{kk} = \sum_{j=1}^n H_{kj}$.
+It follows that $\tilde{W} = WY^{-1}$ is normalized such that each column has $\ell_1$-norm 1, and $\tilde{H} = Z^{-1}H$ is normalized such that each row has $\ell_1$-norm 1. Moreover, we have $A = WH = \tilde{W} Y Z \tilde{H}$.
+We have the equalities \[\sum_{i=1}^m \tilde{W}_{ik} = 1, \quad \sum_{j=1}^n \tilde{H}_{kj} = 1,\] hence we can interpret $\tilde{W}_{ij} = p(w_i|k)$ and $\tilde{H}_{ij} = p(d_j|k)$.
+Moreover, we have \[1 = \sum_{i=1}^m \sum_{j=1}^n p(w_i, d_j) = \sum_{i=1}^m \sum_{j=1}^n A_{ij} = \sum_{i=1}^m \sum_{j=1}^n \sum_{k=1}^K \tilde{W}_{ik} \left( YZ \right)_{kk} \tilde{H}_{kj} = \sum_{k=1}^K \left(Y Z \right)_{kk}\] so we can interpret $(YZ)_{kk} = p(k)$.
+Thus, the non-negative matrix factorization $A = \tilde{W} ZY \tilde{H}$ induces the PLSA factorization \[p(w_i, d_j) = A_{ij} = \sum_{k=1}^K \tilde{W}_{ik} \left(YZ \right)_{kk} \tilde{H}_{kj} = p(w_i|k)p(d_j|k)p(k). \]
 \paragraph{Problem 2b.}
 \paragraph{Problem 2c.}
 
