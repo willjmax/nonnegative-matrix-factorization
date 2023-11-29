@@ -16,7 +16,7 @@ $m \times k$ and $k \times n$. $W$ is the matrix of centroids, an $H$ is the coe
 Our implementation follows three steps:
 1. Initialization - we initialize $W$ and $H$ via $k$-means clustering. $W$ is initialized to the matrix consisting of the $k$ centroids, and $H$ is initialized to the indicator matrix which assigns each vector to a cluster
 2. Update - we update $W$ and $H$ by applying non-negative least squares (NLS) in an alternating manner. That is, we update the rows of $W$ by applying NLS to $H$ and $A$, then update the columns of $H$ by applying NLS to $W$ and $A$.
-3. Evalutation - we evaluate the solution with the enius norm $\||A - WH\||_F$.
+3. Evalutation - we evaluate the solution with the Frobenius norm $\||A - WH\||_F$.
 
 #### A note on notation
 In this implementation we rely on ```sklearn.cluster.KMeans``` for our initialization. This package assumes the $m \times n$
