@@ -81,6 +81,7 @@ We also have, \[ p(d_j | k) \approx \tilde{H}_{kj} = \begin{cases} \frac{1}{|C_k
 Finally, we have \[p(k) \approx (ZY)_{kk} = \|c_k\|_1 |C_k| = \sum_{i=1}^m \sum_{x_j \in C_k} p(w_i, d_j)\] which is the probability that the event which occurs is in the form $p(w_i, d_j)$ where $x_j$ is in the $k$th cluster.
 
 \paragraph{Problem 2c.}
+To drop the indicator vectors we compute $\argmin_H \|A - H^TH\|^2_F $ under the constraints that $H \geq 0$, however we do not require that $HH^T = I$. Now, each column may have more than one non-zero entry. We interpret the entry $H_{ij}$ as a weight that cluster $i$ assigns to the vector $x_j$. Hence, we can compute the centroids as a weighted average $c_k = \frac{1}{n}\sum_{j=1}^n H_{kj} x_j$.
 
 \bibliographystyle{plain}
 \bibliography{questions}
