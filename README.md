@@ -1,5 +1,4 @@
-# Research Software Engineer Pre-Interview Task
-This repo contains all of the materials for the pre-interview task.
+# Implementation of non-negative matrix factorization algorithms
 
 1. The NNMF library is found in ```code/nnmf.py```
 2. A Jupyter notebook containing a comparison of the NNMF implementation to ```sklearn.decomposition.NMF``` is found in ```code/experiment.ipynb```
